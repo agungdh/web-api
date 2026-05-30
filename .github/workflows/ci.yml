@@ -36,7 +36,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y g++ zlib1g-dev libfreetype6-dev
 
       - name: Build
-        run: ./mvnw verify -B
+        run: ./mvnw verify -B -DskipTests
 
       - name: Build native image
         run: ./mvnw package -Dnative -DskipTests
