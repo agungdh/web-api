@@ -64,26 +64,30 @@
                                            @QueryParam("size") @DefaultValue("20") int size) {
       var query = MyEntity.findAll();
       var list = query.page(Page.of(page, size)).list();
-      return new PagedResponse<>(MyEntityMapper.INSTANCE.toDTOs(list), query.count(), page, size);
+      return new PagedResponse<>(mapper.toDTOs(list), query.count(), page, size);
   }
   ```
 
-- **DTOs**: Use Java `record` for all request and response DTOs. Expose `uuid` — never expose the internal `id`. Naming convention: `<EntityName>DTO` (e.g., `MyEntityDTO`).
+- **DTOs**: Use Java `record` for both request (e.g., `CategoryRequest`) and response (e.g., `CategoryDTO`) DTOs. Expose `uuid` — never expose the internal `id`. Put `@NotBlank` on required `String` fields.
 
   ```java
-  public record MyEntityDTO(UUID uuid, String field) {}
+  public record CategoryRequest(@NotBlank String name, String slug) {}
+  public record CategoryDTO(UUID uuid, String name, String slug) {}
   ```
 
-- **MapStruct**: Entity ↔ DTO conversion MUST use MapStruct (`quarkus-mapstruct`). Create one `@Mapper(componentModel = "cdi")` interface per entity and inject it into the resource class. Define both single-entity and list conversion methods.
+- **Validation**: Use `@Valid` on resource method parameters to trigger Jakarta Bean Validation. Dependencies: `quarkus-hibernate-validator`.
+
+- **MapStruct**: Entity ↔ DTO conversion MUST use MapStruct (`quarkus-mapstruct`). Create one `@Mapper(componentModel = "cdi")` interface per entity and inject it via `@Inject` into the resource. Define `toDTO` + `toDTOs` (list) methods. Use `unmappedTargetPolicy = ReportingPolicy.IGNORE` to suppress warnings on fields not present in the DTO (e.g., `id`, audit columns).
 
   ```java
-  @Mapper(componentModel = "cdi")
-  public interface MyEntityMapper {
-      MyEntityDTO toDTO(MyEntity entity);
-      List<MyEntityDTO> toDTOs(List<MyEntity> entities);
-      MyEntity toEntity(MyEntityDTO dto);
+  @Mapper(componentModel = "cdi", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  public interface CategoryMapper {
+      CategoryDTO toDTO(Category entity);
+      List<CategoryDTO> toDTOs(List<Category> entities);
   }
   ```
+
+- **Slug auto-generation**: When a request provides no slug, derive it from the name/title via `SlugUtils.toSlug(String)` (lowercase, spaces → `-`, strips non-`[a-z0-9-]`). Apply in both create and update paths.
 
 ## Infrastructure
 
@@ -125,7 +129,7 @@ GitHub Actions (`.github/workflows/ci.yml`) on push/PR to `main`:
 1. Download Mandrel 25 tar.gz
 2. Install via `setup-java@v4` with `distribution: jdkfile`
 3. Install native deps (`g++`, `zlib1g-dev`, `libfreetype6-dev`)
-4. `./mvnw verify -B` (unit tests only)
+4. `./mvnw verify -B -DskipTests` (compile only, no tests run)
 5. `./mvnw package -Dnative -DskipTests` (native image)
 6. Build distroless Docker image, push to **GHCR** and **Docker Hub** (push only on actual `push` event, not PR)
 
