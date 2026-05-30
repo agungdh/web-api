@@ -1,0 +1,6 @@
+quarkus:
+  swagger-ui:
+    always-include: true
+  flyway:
+    migrate-at-start: true
+    locations: classpath:db/migration
