@@ -49,6 +49,43 @@
 - **No `import.sql`**: All DDL/seed via Flyway migrations (`src/main/resources/db/migration/`). Do NOT create `import.sql`.
 - **PostgreSQL only**: Use native queries when needed. Leverage partial indexes on `WHERE deleted_at IS NULL`, native UUID type, etc.
 
+## CRUD & API Conventions
+
+- **Pagination**: All GET list endpoints MUST be paginated. Use `PanacheQuery.page(Page.of(page, size))` + `PanacheQuery.count()` (count before pagination). Wrap the response in a `PagedResponse<T>` record:
+
+  ```java
+  public record PagedResponse<T>(List<T> data, long total, int page, int size) {}
+  ```
+
+  Resource method example:
+
+  ```java
+  @GET
+  public PagedResponse<MyEntityDTO> getAll(@QueryParam("page") @DefaultValue("0") int page,
+                                           @QueryParam("size") @DefaultValue("20") int size) {
+      var query = MyEntity.findAll();
+      var list = query.page(Page.of(page, size)).list();
+      return new PagedResponse<>(MyEntityMapper.INSTANCE.toDTOs(list), query.count(), page, size);
+  }
+  ```
+
+- **DTOs**: Use Java `record` for all request and response DTOs. Expose `uuid` — never expose the internal `id`. Naming convention: `<EntityName>DTO` (e.g., `MyEntityDTO`).
+
+  ```java
+  public record MyEntityDTO(UUID uuid, String field) {}
+  ```
+
+- **MapStruct**: Entity ↔ DTO conversion MUST use MapStruct (`quarkus-mapstruct`). Create one `@Mapper(componentModel = "cdi")` interface per entity and inject it into the resource class. Define both single-entity and list conversion methods.
+
+  ```java
+  @Mapper(componentModel = "cdi")
+  public interface MyEntityMapper {
+      MyEntityDTO toDTO(MyEntity entity);
+      List<MyEntityDTO> toDTOs(List<MyEntity> entities);
+      MyEntity toEntity(MyEntityDTO dto);
+  }
+  ```
+
 ## Infrastructure
 
 ```bash
