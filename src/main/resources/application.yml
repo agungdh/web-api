@@ -1,6 +1,6 @@
 quarkus:
   native:
-    additional-build-args: -march=x86-64-v2,--gc=G1
+    additional-build-args: -march=x86-64-v2
   swagger-ui:
     always-include: true
   flyway:
