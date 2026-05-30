@@ -3,7 +3,7 @@
 ## Build & Run
 
 ```bash
-./mvnw quarkus:dev           # dev mode, hot-reload, Dev UI at http://localhost:8080/q/dev/
+./mvnw quarkus:dev           # dev mode, hot-reload, Dev UI at http://localhost:8080/q/dev/, Swagger UI at /q/swagger-ui/
 ./mvnw test                  # unit tests only
 ./mvnw verify                # unit tests only (skipITs=true by default)
 ./mvnw verify -DskipITs=false  # unit + integration tests
@@ -35,8 +35,7 @@
 
 - **Mandrel required** — `setup-java` with `distribution: temurin` will NOT work for native builds. Use Mandrel.
 - **`application.yml`** sets `quarkus.native.additional-build-args: -march=x86-64-v2` (target ISA level).
-- Additional GraalVM flags can be appended: `--gc=G1`, `-H:Optimize=0`, etc.
-- GC is **baked at build time**, cannot be changed at runtime (build log says "Serial GC" — that's the build-time GC; runtime GC defaults to Serial).
+- Runtime GC for the native binary defaults to Serial. Pass `--gc=G1` in `additional-build-args` to use G1.
 - Ubuntu native deps: `g++ zlib1g-dev libfreetype6-dev`
 - **Optimization levels**: `0` (fastest build, debug), `1`, `2` (default, peak perf), `3` (experimental). Append `,-H:Optimize=0` to args for faster dev builds.
 
