@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: webapi
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  valkey:
+    image: valkey/valkey:latest
+    ports:
+      - "127.0.0.1:6379:6379"
+    restart: always
+    volumes:
+      - valkey_data:/data
+
+  minio:
+    image: pgsty/minio:latest
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: adminadmin
+    restart: always
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "127.0.0.1:8083:8080"
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+
+volumes:
+  postgres_data:
+  valkey_data:
+  minio_data:
