@@ -14,11 +14,18 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up JDK 25
+      - name: Download Mandrel 25
+        run: |
+          wget -O $RUNNER_TEMP/mandrel.tar.gz \
+            https://github.com/graalvm/mandrel/releases/download/mandrel-25.0.3.0-Final/mandrel-java25-linux-amd64-25.0.3.0-Final.tar.gz
+
+      - name: Set up JDK 25 (Mandrel)
         uses: actions/setup-java@v4
         with:
-          java-version: 25
-          distribution: temurin
+          distribution: 'jdkfile'
+          jdkFile: ${{ runner.temp }}/mandrel.tar.gz
+          java-version: '25'
+          architecture: x64
           cache: maven
 
       - name: Build
