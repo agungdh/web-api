@@ -1,0 +1,24 @@
+####
+# This Dockerfile is used in order to build a container that runs the Quarkus application in native (no JVM) mode.
+# It uses Google's distroless base image for a minimal, secure container.
+#
+# Before building the container image run:
+#
+# ./mvnw package -Dnative
+#
+# Then, build the image with:
+#
+# docker build -f src/main/docker/Dockerfile.native-distroless -t quarkus/web-api .
+#
+# Then run the container using:
+#
+# docker run -i --rm -p 8080:8080 quarkus/web-api
+#
+# Distroless images: https://github.com/GoogleContainerTools/distroless
+###
+FROM gcr.io/distroless/cc-debian12:nonroot
+COPY --chmod=0755 target/*-runner /application
+
+EXPOSE 8080
+
+ENTRYPOINT ["/application", "-Dquarkus.http.host=0.0.0.0"]
