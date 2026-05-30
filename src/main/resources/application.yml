@@ -1,4 +1,13 @@
 quarkus:
+  datasource:
+    db-kind: postgresql
+    username: admin
+    password: admin
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/webapi
+  hibernate-orm:
+    database:
+      generation: none
   native:
     additional-build-args: -march=x86-64-v2
   swagger-ui:
