@@ -1,5 +1,11 @@
-package id.my.agungdh;
+package id.my.agungdh.resource;
 
+import id.my.agungdh.dto.CommentDTO;
+import id.my.agungdh.dto.CommentRequest;
+import id.my.agungdh.dto.PagedResponse;
+import id.my.agungdh.entity.Comment;
+import id.my.agungdh.entity.Post;
+import id.my.agungdh.mapper.CommentMapper;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import jakarta.inject.Inject;

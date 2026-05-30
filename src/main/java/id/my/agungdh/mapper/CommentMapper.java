@@ -1,5 +1,7 @@
-package id.my.agungdh;
+package id.my.agungdh.mapper;
 
+import id.my.agungdh.dto.CommentDTO;
+import id.my.agungdh.entity.Comment;
 import org.mapstruct.Mapper;
 
 import java.util.List;

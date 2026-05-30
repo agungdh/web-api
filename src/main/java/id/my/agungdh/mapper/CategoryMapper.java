@@ -1,5 +1,7 @@
-package id.my.agungdh;
+package id.my.agungdh.mapper;
 
+import id.my.agungdh.dto.CategoryDTO;
+import id.my.agungdh.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

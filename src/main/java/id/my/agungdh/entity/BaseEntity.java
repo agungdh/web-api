@@ -1,4 +1,4 @@
-package id.my.agungdh;
+package id.my.agungdh.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;

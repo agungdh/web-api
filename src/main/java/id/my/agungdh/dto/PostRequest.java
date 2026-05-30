@@ -1,4 +1,4 @@
-package id.my.agungdh;
+package id.my.agungdh.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;

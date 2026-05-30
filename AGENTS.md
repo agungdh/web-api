@@ -24,7 +24,7 @@
 - **Java**: release 25, **Mandrel** distribution (GraalVM CE for native image). CI downloads Mandrel 25.0.3.0-Final via `jdkfile`.
 - **Quarkus**: 3.36.0
 - **Config format**: YAML (`src/main/resources/application.yml`). `quarkus-config-yaml` is a dependency — do NOT create `application.properties`.
-- **Package**: `id.my.agungdh` — flat single-package layout, no sub-packages.
+- **Package**: `id.my.agungdh` with sub-packages: `entity`, `dto`, `mapper`, `resource`, `util`. Tests stay in `id.my.agungdh`.
 - **Maven wrapper**: `mvnw` uses Maven 3.9.15.
 
 ## Native Image
@@ -100,9 +100,9 @@ docker compose up -d   # PostgreSQL, Valkey, MinIO, Adminer
 
 All ports bound to `127.0.0.1` only.
 
-Flyway is configured (`quarkus.flyway.migrate-at-start: true`, `locations: classpath:db/migration`) but **no migrations exist yet** (only `.gitkeep`).
+Flyway is configured (`quarkus.flyway.migrate-at-start: true`, `locations: classpath:db/migration`) with migrations in `src/main/resources/db/migration/`.
 
-**No datasource is configured** in `application.yml` — add `quarkus.datasource.*` properties to wire up PostgreSQL.
+**Datasource** is configured in `application.yml` pointing to PostgreSQL at `localhost:5432/webapi` (user: `admin`, pass: `admin`).
 
 ## Docker
 
@@ -139,8 +139,6 @@ These are in `pom.xml` but no source file references them yet:
 
 | Dependency | Purpose |
 |---|---|
-| `quarkus-mapstruct` | Object mapping / DTO conversion |
-| `quarkus-hibernate-validator` | Bean validation |
 | `quarkus-poi` | Excel generation |
 | `quarkus-openpdf` | PDF generation |
 | `lombok` | Boilerplate reduction |

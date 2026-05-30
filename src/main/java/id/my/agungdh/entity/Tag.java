@@ -1,12 +1,12 @@
-package id.my.agungdh;
+package id.my.agungdh.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "category")
-public class Category extends BaseEntity {
+@Table(name = "tag")
+public class Tag extends BaseEntity {
 
     @Column(nullable = false)
     public String name;

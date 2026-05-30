@@ -1,4 +1,4 @@
-package id.my.agungdh;
+package id.my.agungdh.resource;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

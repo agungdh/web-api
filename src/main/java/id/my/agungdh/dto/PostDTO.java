@@ -1,4 +1,4 @@
-package id.my.agungdh;
+package id.my.agungdh.dto;
 
 import java.time.Instant;
 import java.util.List;

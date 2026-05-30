@@ -1,4 +1,4 @@
-package id.my.agungdh;
+package id.my.agungdh.util;
 
 public class SlugUtils {
     public static String toSlug(String input) {

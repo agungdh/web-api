@@ -1,4 +1,4 @@
-package id.my.agungdh;
+package id.my.agungdh.entity;
 
 import jakarta.persistence.Entity;
 
