@@ -1,4 +1,4 @@
-## A basic GitHub Actions workflow for your Quarkus application.
+## CI build + test + native + docker
 
 name: CI build
 
@@ -13,7 +13,30 @@ permissions:
   packages: write
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+          cache: maven
+
+      - name: Start services
+        run: docker compose up -d --wait
+
+      - name: Run tests (unit + integration)
+        run: ./mvnw verify -DskipITs=false -B
+
+      - name: Stop services
+        if: always()
+        run: docker compose down
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

@@ -1,0 +1,6 @@
+quarkus:
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+  flyway:
+    migrate-at-start: false
