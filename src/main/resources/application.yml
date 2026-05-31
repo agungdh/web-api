@@ -13,5 +13,5 @@ quarkus:
   swagger-ui:
     always-include: true
   flyway:
-    migrate-at-start: true
+    migrate-at-start: false
     locations: classpath:db/migration
