@@ -7,7 +7,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "cdi", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "jakarta-cdi", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CategoryMapper {
     CategoryDTO toDTO(Category entity);
     List<CategoryDTO> toDTOs(List<Category> entities);

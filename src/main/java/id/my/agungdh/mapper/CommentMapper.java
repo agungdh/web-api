@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "cdi")
+@Mapper(componentModel = "jakarta-cdi")
 public interface CommentMapper {
     CommentDTO toDTO(Comment entity);
     List<CommentDTO> toDTOs(List<Comment> entities);
