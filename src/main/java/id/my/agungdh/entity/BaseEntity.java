@@ -1,7 +1,10 @@
 package id.my.agungdh.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -12,7 +15,11 @@ import java.util.UUID;
 
 @MappedSuperclass
 @SQLRestriction("deleted_at IS NULL")
-public class BaseEntity extends PanacheEntity {
+public abstract class BaseEntity extends PanacheEntityBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_gen")
+    public Long id;
 
     @Column(unique = true, nullable = false, updatable = false)
     public UUID uuid;

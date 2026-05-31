@@ -2,10 +2,12 @@ package id.my.agungdh.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tag")
+@SequenceGenerator(name = "sequence_gen", sequenceName = "tag_id_seq", allocationSize = 1)
 public class Tag extends BaseEntity {
 
     @Column(nullable = false)

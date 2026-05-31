@@ -6,6 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 import java.time.Instant;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "post")
+@SequenceGenerator(name = "sequence_gen", sequenceName = "post_id_seq", allocationSize = 1)
 public class Post extends BaseEntity {
 
     @Column(nullable = false)
